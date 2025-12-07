@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ezio - Développeur Web Junior | Portfolio 2025</title>
+    <meta name="description" content="Ezio, 14 ans, développeur web passionné de jeux 3D et sites stylés. HTML, CSS, JS, WebGL, prototypes GTA-like.">
+    
+    <style>
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #4ecdc4;
+            --dark: #0a0a0a;
+            --dark-alt: #1a1a2e;
+            --light: #f8f9fa;
+            --glass: rgba(255,255,255,0.1);
+            --shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--dark), var(--dark-alt));
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Navigation fluide */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 3rem;
+        }
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        nav a:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        nav a:hover::after { width: 100%; }
+
+        /* Hero Section */
+        #home {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(255,107,107,0.1), transparent);
+        }
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px var(--primary)); }
+            to { filter: drop-shadow(0 0 30px var(--primary)); }
+        }
+        .hero-subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        .cta-button {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(255,107,107,0.4);
+        }
+
+        /* Sections communes */
+        section {
+            padding: 8rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        section h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            text-align: center;
+            margin-bottom: 4rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Glass Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        .card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        /* Projets */
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+        .tech-tag {
+            background: rgba(255,255,255,0.2);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Compétences */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        .skill-item {
+            text-align: center;
+        }
+        .skill-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Contact */
+        #contact form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            color: var(--light);
+            font-size: 1rem;
+        }
+        input::placeholder, textarea::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem;
+            background: rgba(10,10,10,0.8);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul { gap: 1.5rem; }
+            section { padding: 4rem 1rem; }
+        }
+
+        /* Scroll animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card { animation: fadeInUp 0.6s ease forwards; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#home">Accueil</a></li>
+            <li><a href="#about">À propos</a></li>
+            <li><a href="#skills">Compétences</a></li>
+            <li><a href="#projects">Projets</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section id="home">
+        <h1 class="hero-title">Ezio</h1>
+        <p class="hero-subtitle">Développeur Web Junior • 14 ans • Passionné de 3D & Jeux</p>
+        <p style="font-size: 1.2rem; opacity: 0.8; max-width: 600px;">
+            Créateur de prototypes GTA-like en un seul fichier HTML, moteurs 3D WebGL, sites stylés.
+        </p>
+        <button class="cta-button" onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})">
+            Voir mes Projets 🔥
+        </button>
+    </section>
+
+    <!-- À propos -->
+    <section id="about">
+        <h2>À propos de moi</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>🚀 Qui je suis</h3>
+                <p>Ezio, 14 ans, auto-didacte passionné par le développement web et les jeux 3D. J'ai créé des prototypes GTA 6 en HTML pur avec WebGL, physique réaliste et contrôles FPS.</p>
+            </div>
+            <div class="card">
+                <h3>💻 Mes forces</h3>
+                <p>Maîtrise des langages web (HTML/CSS/JS), rendu 3D sans librairies, optimisation performance, design moderne glassmorphism.</p>
+            </div>
+            <div class="card">
+                <h3>🎯 Objectifs</h3>
+                <p>Rejoindre une équipe junior, contribuer open-source, développer des jeux web next-gen et sites e-commerce innovants.</p>
+            </div>
+            <div class="card">
+                <h3>📈 Évolution</h3>
+                <p>De zéro à moteurs 3D en 6 mois. Prochain challenge : Three.js + multiplayer realtime.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compétences -->
+    <section id="skills">
+        <h2>Mes Compétences</h2>
+        <div class="skills-grid">
+            <div class="skill-item card">
+                <div class="skill-icon">⚡</div>
+                <h3>JavaScript</h3>
+                <p>ES6+, WebGL, Canvas, physique 3D</p>
+            </div>
+            <div class="skill-item card">
+                <div class="skill-icon">🔨</div>
+                <h3>HTML5 / CSS3</h3>
+                <p>Responsive, Animations, Glassmorphism</p>
+            </div>
+            <div class="skill-item card">
+                <div class="skill-icon">🎮</div>
+                <h3>Game Dev</h3>
+                <p>WebGL Shaders, FPS Controls, GTA-like</p>
+            </div>
+            <div class="skill-item card">
+                <div class="skill-icon">⚙️</div>
+                <h3>Tools</h3>
+                <p>Git, VS Code, Chrome DevTools, Figma</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projets -->
+    <section id="projects">
+        <h2>Projets Phares</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>🏙️ GTA 6 Prototype 3D</h3>
+                <div class="project-tech">
+                    <span class="tech-tag">WebGL</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">Shaders</span>
+                    <span class="tech-tag">Physique</span>
+                </div>
+                <p>Moteur 3D complet en un fichier HTML : ville procédurale, voiture FPS, contrôles ZQSD+souris, physique gravité/saut. 60fps mobile.</p>
+                <div style="margin-top: 1.5rem;">
+                    <a href="#" class="cta-button" style="width: 100%; margin-bottom: 0.5rem;">🔴 Live Demo</a>
+                    <a href="#" class="cta-button" style="background: rgba(255,255,255,0.1); width: 100%;">📁 GitHub</a>
+                </div>
+            </div>
+            <div class="card">
+                <h3>🌐 Portfolio Personnel</h3>
+                <div class="project-tech">
+                    <span class="tech-tag">HTML5</span>
+                    <span class="tech-tag">CSS3</span>
+                    <span class="tech-tag">Glassmorphism</span>
+                </div>
+                <p>Site one-page ultra-moderne avec animations fluides, navigation sticky, design sombre inspiré gaming. 100% responsive.</p>
+                <div style="margin-top: 1.5rem;">
+                    <a href="#" class="cta-button" style="width: 100%; margin-bottom: 0.5rem;">👁️ Voir le site</a>
+                    <a href="#" class="cta-button" style="background: rgba(255,255,255,0.1); width: 100%;">💾 Code source</a>
+                </div>
+            </div>
+            <div class="card">
+                <h3>🎯 Mini-Jeux Collection</h3>
+                <div class="project-tech">
+                    <span class="tech-tag">Canvas API</span>
+                    <span class="tech-tag">JS Vanilla</span>
+                    <span class="tech-tag">Particles</span>
+                </div>
+                <p>5 mini-jeux : shooter spatial, course infinie, puzzle physique. Optimisés PWA pour mobile. Leaderboards localStorage.</p>
+                <div style="margin-top: 1.5rem;">
+                    <a href="#" class="cta-button" style="width: 100%; margin-bottom: 0.5rem;">🚀 Jouer</a>
+                    <a href="#" class="cta-button" style="background: rgba(255,255,255,0.1); width: 100%;">📂 Repo</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <h2>Travaillons ensemble</h2>
+        <form>
+            <input type="text" placeholder="Ton nom" required>
+            <input type="email" placeholder="ton@email.com" required>
+            <textarea rows="6" placeholder="Ton message... Projet freelance ? Stage ? Collab jeu ?" required></textarea>
+            <button type="submit" class="cta-button" style="width: 100%;">Envoyer 🚀</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Ezio | Développeur Web Junior | 
+            <a href="#">📧 ezio@dev.com</a> | 
+            <a href="#">🐙 GitHub</a> | 
+            <a href="#">💼 LinkedIn</a>
+        </p>
+        <p style="margin-top: 1rem; opacity: 0.7; font-size: 0.9rem;">
+            Fait avec ❤️ en HTML/CSS/JS pur • Hébergé sur GitHub Pages
+        </p>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(10,10,10,0.98)';
+            } else {
+                nav.style.background = 'rgba(10,10,10,0.95)';
+            }
+        });
+
+        // Form submission (demo)
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('📧 Message envoyé ! Je te réponds vite 🚀');
+        });
+
+        // Parallax effect
+        window.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.card');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            cards.forEach((card, i) => {
+                const speed = (i + 1) * 0.02;
+                card.style.transform = `translate(${x * speed * 20}px, ${y * speed * 20}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
